@@ -1,1 +1,1 @@
-import SimpleTC.Basic
+import SimpleTC.Ty
