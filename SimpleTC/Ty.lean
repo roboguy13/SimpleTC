@@ -121,11 +121,16 @@ theorem checkKindsTyVar : ∀ {Φ k} {t x},
 
 theorem checkKindsForall : ∀ {Φ k} {t k' a},
     checkKinds Φ k t = .ok (.Forall k a) →
-    ∃ a', (checkKinds (Φ.extend k') k a' = .ok a ∧ t = .Forall k' a') := sorry
+    ∃ a', (checkKinds (Φ.extend k') k a' = .ok a ∧ t = .Forall k' a') := by
+  intros Φ k t x h
+  cases t <;> simp_all [checkKinds, bind, Except.bind]
+  all_goals repeat (split at h <;> simp_all)
+  repeat grind
+
 end checkKinds_inversion
 
 -- `eraseKinds` is a left inverse of `checkKinds`
-theorem checkErase {Φ k} : ∀ {a aWF},
+theorem checkEraseKinds {Φ k} : ∀ {a aWF},
     checkKinds Φ k a = .ok aWF →
     eraseKinds aWF = a := by
   intros a0 aWF0 eq
